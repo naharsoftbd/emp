@@ -9,14 +9,9 @@ use Illuminate\Support\Facades\File;
 use App\Employee;
 use App\Disaction;
 
-class EmployeeController extends Controller
+class EmployeeApiController extends Controller
 {
-    public function __construct(){
-    	$this->middleware('auth');
-    }
-    public function index(){
-    	return view('employees.add_employee');
-    }
+   
 
     public function add_employee(Request $request){
     	$employe = new Employee();
@@ -39,16 +34,16 @@ class EmployeeController extends Controller
          $file->move('profile/', $name);
          $profile_photo = "profile/".$name;
         $employe->profile_photo = $profile_photo;
-        }
+         }
         $employe->save();
-        return redirect()->route('viewemployee', ['id' => $employe->id]);
+        return response()->json([
+                        
+            'success' => $name.' added successfullyt',          
+            
+        ]);
     }
 
-    public function editEmployee(Request $request){
-        $employee =  Employee::find($request->id);
-        return view('employees.edit_employee',['employee'=>$employee]);
-    }
-
+    
     public function updateEmployee(Request $request){
         $employe = Employee::find($request->id);
         $name = $request->name;
@@ -76,7 +71,12 @@ class EmployeeController extends Controller
         $employe->update();
         $employee =  Employee::find($request->id);
         $disactions = Disaction::where('employee_id',$employe->id)->paginate(3);
-        return redirect()->route('viewemployee', ['id' => $employe->id]);
+        return response()->json([                        
+            'success' => $name.' added successfullyt',  
+            'employee' =>$employee,
+            'disactions' => $disactions     
+            
+        ]);
     }
 
     public function getEmployee(Request $request){

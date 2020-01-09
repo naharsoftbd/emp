@@ -14,12 +14,13 @@
                         </div>
                     @endif
                     <div class="row">
-                   <div class="col-md-8">
+                   <div class="col-md-6">
 
                     <table class="table-bordered">
                         <tbody>
                             <thead>
                                 <th>Employee Code</th>
+                                <th><a href="{{route('editemployee',['id'=>$employee->id])}}">Edit Employee</a></th>
                             </thead>
                             
                             
@@ -36,8 +37,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-4">
-                    <img src="$employee->profile_photo">
+                <div class="col-md-6">
+                    <img src="{{URL::to('/')}}/{{$employee->profile_photo}}" width="300">
                 </div>
                 </div>
                 <br>
@@ -149,7 +150,7 @@
       </tr>
     </thead>
     <tbody>
-        @foreach($employee->disactions as $disaction)
+        @foreach($disactions as $disaction)
       <tr>
         <td>{{$disaction->godate}}</td>
         <td>{{$disaction->offence}}</td>
@@ -157,6 +158,7 @@
         <td><a href="{{route('viewdisaction',['id'=>$disaction->id])}}">View</a>||<a href="{{route('editdisaction',['id'=>$disaction->id])}}">Edit</a>||<a href="{{route('deletedisaction',['id'=>$disaction->id])}}">Delete</a></td>
       </tr>
       @endforeach;
+      <tr><td>{{ $disactions->appends(['id' => $employee->id])->links() }}</td></tr>
       
     </tbody>
   </table>
