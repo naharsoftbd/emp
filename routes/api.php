@@ -20,11 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('login', 'AuthController@login');
 Route::post('addemployee','EmployeeApiController@add_employee');
 Route::post('updateemployee','EmployeeApiController@updateEmployee');
-Route::get('employee','EmployeeApiController@getEmployee');
-Route::post('employee','EmployeeApiController@addDisaction');
-Route::get('disaction/{id?}','EmployeeApiController@getDisaction');
-Route::get('editdisaction/{id?}','EmployeeApiController@editDisaction');
-Route::post('updatedisaction/{id?}','EmployeeApiController@updateDisaction');
+Route::get('getemployee/{id?}','EmployeeApiController@getEmployee');
+Route::post('adddisaction','EmployeeApiController@addDisaction');
+Route::get('getdisaction/{id?}','EmployeeApiController@getDisaction');
+Route::post('updatedisaction','EmployeeApiController@updateDisaction');
 Route::get('deletedisaction/{id?}','EmployeeApiController@destroyDisaction');
 
 

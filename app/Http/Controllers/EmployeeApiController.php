@@ -70,7 +70,7 @@ class EmployeeApiController extends Controller
         
         $employe->update();
         $employee =  Employee::find($request->id);
-        $disactions = Disaction::where('employee_id',$employe->id)->paginate(3);
+        $disactions = Disaction::where('employee_id',$employe->id)->get();
         return response()->json([                        
             'success' => $name.' added successfullyt',  
             'employee' =>$employee,
@@ -81,9 +81,12 @@ class EmployeeApiController extends Controller
 
     public function getEmployee(Request $request){
         $employee =  Employee::find($request->id);
-        $disactions = Disaction::where('employee_id',$request->id)->paginate(3);
-        //dd($disactions);
-        return view('employees.details',['employee'=>$employee,'disactions'=>$disactions]);
+        $disactions = Disaction::where('employee_id',$request->id)->get();
+        return response()->json([                        
+            'employee' =>$employee,
+            'disactions' => $disactions     
+            
+        ]);
     }
 
     public function adddisaction(Request $request){
@@ -96,26 +99,29 @@ class EmployeeApiController extends Controller
         $disaction->punishment1 = $request->nopunishment1;
         $disaction->punishment2 = $request->nopunishment2;
         $disaction->remarks = $request->remarks;
-        $disaction->employee_id = $_GET['id'];
+        $disaction->employee_id = $request->employee_id;
         $disaction->save();
 
-        $employee =  Employee::with('disactions')->find($_GET['id']);
-        $disactions = Disaction::where('employee_id',$_GET['id'])->paginate(3);
-        return view('employees.details',['employee'=>$employee,'disactions'=>$disactions]);
+        $employee =  Employee::with('disactions')->find($request->employee_id);
+        $disactions = Disaction::where('employee_id',$request->employee_id)->get();
+        return response()->json([                        
+            'employee' =>$employee,
+            'disactions' => $disactions     
+            
+        ]);
 
 
     }
     public function getDisaction(Request $request){
         $disaction =  Disaction::find($request->id);
-        return view('employees.details_disaction',['disaction'=>$disaction]);
+        return response()->json([                        
+            'disaction' => $disaction    
+            
+        ]);
 
     }
 
-    public function editDisaction(Request $request){
-        $disaction =  Disaction::find($request->id);
-        return view('employees.edit_disaction',['disaction'=>$disaction]);
-    }
-
+    
     public function updateDisaction(Request $request){
 
         $disaction = Disaction::find($request->id);
@@ -130,15 +136,22 @@ class EmployeeApiController extends Controller
         $disaction->update();
 
         $employee =  Employee::with('disactions')->find($emp_id);
-        $disactions = Disaction::where('employee_id',$emp_id)->paginate(3);
-        return redirect()->route('viewemployee', ['id' => $emp_id]);
+        $disactions = Disaction::where('employee_id',$emp_id)->get();
+        return response()->json([
+             'employee' => $employee,                      
+            'disactions' => $disactions    
+            
+        ]);
 
 
     }
 
     public function destroyDisaction(Request $request){
         Disaction::destroy($request->id);
-
-        return redirect('/home');
+        return response()->json([
+             'success' => 'Deleted successfully'                    
+              
+            
+        ]);
     }
 }
