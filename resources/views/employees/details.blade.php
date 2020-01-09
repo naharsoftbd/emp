@@ -42,6 +42,7 @@
                 </div>
                 </div>
                 <br>
+                <h2>Add Discplnory Action</h2>
                 <form method="POST" action="{{ route('adddisaction',['id' => $employee->id]) }}">
                         @csrf
 
