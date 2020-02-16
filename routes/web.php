@@ -18,8 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/addemployee','EmployeeController@index')->name('addemployee');
-Route::post('/addemployee','EmployeeController@add_employee')->name('addemployee');
+Route::resource('addemployee','EmployeeController');
+//Route::post('/addemployee','EmployeeController@add_employee')->name('addemployee');
 Route::get('/editemployee/{id?}','EmployeeController@editEmployee')->name('editemployee');
 Route::post('/updateemployee','EmployeeController@updateEmployee')->name('updateemployee');
 Route::get('/employee','EmployeeController@getEmployee')->name('viewemployee');
