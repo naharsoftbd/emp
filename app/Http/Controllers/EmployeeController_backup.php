@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
 use App\Employee;
 use App\Disaction;
 
@@ -15,19 +14,11 @@ class EmployeeController extends Controller
     public function __construct(){
     	$this->middleware('auth');
     }
-    public function index(Request $Request){
+    public function index(){
     	return view('employees.add_employee');
     }
 
-    public function store(Request $request){
-
-        $validator = Validator::make($request->all(),[
-            'name' => 'required','designation' => 'required']);
-        $errors = $validator->errors();
-        if ($validator->fails()) {
-             return response()->json(['errors'=>$errors]);
-        }else{
-
+    public function add_employee(Request $request){
     	$employe = new Employee();
     	$name = $request->name;
     	$designation = $request->designation;
@@ -50,9 +41,7 @@ class EmployeeController extends Controller
         $employe->profile_photo = $profile_photo;
         }
         $employe->save();
-        //return redirect()->route('viewemployee', ['id' => $employe->id]);
-        return response()->json(['success'=>"Employee created successfully"]);
-    }
+        return redirect()->route('viewemployee', ['id' => $employe->id]);
     }
 
     public function editEmployee(Request $request){
